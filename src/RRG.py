@@ -135,9 +135,7 @@ class RRG:
             df = self.loader.get(name)
 
             if df is None or df.empty:
-                raise ValueError(
-                    f"Unable to load data for {short_name.upper()}"
-                )
+                continue
 
             pos = min(len(df), self.period)
             df = df.loc[df.index[-pos] :, "Close"]
