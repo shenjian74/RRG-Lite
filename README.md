@@ -25,7 +25,28 @@ If you liked this project, please :star2: both our repos to encourage more inspi
 
 ## Setup
 
+See [Setting up configuration file](https://github.com/BennyThadikaran/RRG-Lite/wiki/Setup)
+
 ## Quick Usage
+
+Make sure to setup your configuration file.
+
+```bash
+# assuming DATA_PATH, WATCHLIST_FILE and BENCHMARK has been setup
+py init.py
+```
+
+**Pass a benchmark index using `-b` or `--benchmark` and a list of symbol names using `--sym`.**
+
+`py init.py -b "nifty bank" --sym csbbank rblbank indianb ucobank`
+
+**Pass a watchlist file using `-f` or `--file` option**
+
+`py init.py -f nifty50.csv`
+
+**To display help use `-h` option.**
+
+`py init.py -h`
 
 ## Chart controls
 
@@ -38,3 +59,15 @@ Press **`h`** to toggle help text (Keybindings) in chart.
 Press **`a`** to toggle displaying ticker labels (Annotations)
 
 Press **`t`** to toggle tail lines for all tickers.
+
+Press **`q`** to quit the chart.
+
+Matplotlib provides useful window controls like zooming and panning. Read the links below on how to use the various tools.
+
+To use zoom to rectangle tool - Press `o` (useful if plotting lots of symbols on chart.)
+
+To reset the chart, press `r`
+
+[Interactive navigation](https://matplotlib.org/stable/users/explain/figure/interactive.html#interactive-navigation)
+
+[Navigation keyboard shortcuts](https://matplotlib.org/stable/users/explain/figure/interactive.html#navigation-keyboard-shortcuts)
