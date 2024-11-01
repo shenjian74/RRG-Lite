@@ -102,9 +102,7 @@ class RRG:
                 f"Unable to load benchmark data for {self.benchmark}"
             )
 
-        pos = min(len(bm), self.period)
-
-        bm = bm.loc[bm.index[-pos] :, "Close"]
+        bm = bm.loc[:, "Close"]
 
         # Setup the chart
         self.fig, axs = plt.subplots()
@@ -152,8 +150,7 @@ class RRG:
             if df is None or df.empty:
                 continue
 
-            pos = min(len(df), self.period)
-            df = df.loc[df.index[-pos] :, "Close"]
+            df = df.loc[:, "Close"]
 
             rsr = self._calculate_rs(df, bm)
 
@@ -260,8 +257,10 @@ class RRG:
         - Add 100 to serve as a base value
         """
 
+        pos = min(len(rs_ratio), self.period)
+
         # Rate of change (ROC) with first value as base
-        rs_roc = ((rs_ratio / rs_ratio.iloc[1]) - 1) * 100
+        rs_roc = ((rs_ratio / rs_ratio.iloc[-pos]) - 1) * 100
 
         roc_sma = rs_roc.rolling(window=self.window)
 

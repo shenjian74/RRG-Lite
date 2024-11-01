@@ -45,11 +45,16 @@ args = utils.parse_cli_options()
 
 loader_class = utils.get_loader_class(config)
 
+window = config.get("WINDOW", 14)
+period = config.get("PERIOD", 52)
+
+minimum_period_to_load = window * 2 + args.tail
+
 loader = loader_class(
     config,
     args.tf,
     end_date=args.date,
-    period=config.get("PERIOD", 52),
+    period=max(minimum_period_to_load, period),
 )
 
 if args.sym:
