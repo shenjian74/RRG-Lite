@@ -22,7 +22,7 @@ class RRG:
         self,
         config: dict,
         loader: AbstractLoader,
-        watchlist: pd.DataFrame,
+        watchlist: list,
         tail_count=4,
         benchmark=None,
     ):
@@ -139,13 +139,16 @@ class RRG:
         )
 
         # Start calculation of RS and RS Momentum
-        for i in self.watchlist.index:
-            name, short_name = self.watchlist.loc[i, ["SYMBOL", "ABBREV"]]
+        for i, ticker in enumerate(self.watchlist):
+            short_name = None
 
-            if pd.isna(short_name):
-                short_name = name
+            if "," in ticker:
+                ticker, short_name = ticker.split(",")
 
-            df = self.loader.get(name)
+            if short_name is None:
+                short_name = ticker
+
+            df = self.loader.get(ticker)
 
             if df is None or df.empty:
                 continue
