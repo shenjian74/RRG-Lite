@@ -11,11 +11,16 @@ RRG-Lite is a Python CLI tool for displaying Relative Rotational graph (RRG) cha
 - Tickers are shown without tail lines or labels for a cleaner look. (See [Chart controls](#chart-controls))
 - Mouse and keyboard controls enhance the user experience and aid in detailed analysis.
 
+**By default,** 
+- the timeframe is weekly and 14 week average is used for calculations.
+- The RS momentum is calculated by comparing the current value to its value from 52 weeks ago.
+- See wiki for explanation of [RS ratio and Momentum calculations](https://github.com/BennyThadikaran/RRG-Lite/wiki/RS-ratio-and-Momentum-calculations) 
+
 ## Credits
 
 This project was inspired and made possible due to the work of [An0n1mity/RRGPy](https://github.com/An0n1mity/RRGPy).
 
-If you liked this project, please :star2: both our repos to encourage more inspirational works. :heart:
+If you liked this project, please :star2: the repos to encourage more inspirational works. :heart:
 
 ## Install
 
@@ -41,10 +46,10 @@ If you wish to use [EOD2](https://github.com/BennyThadikaran/eod2) as your data 
 
 ## Quick Usage
 
-Make sure to setup your configuration file.
+Make sure to set up your configuration file.
 
 ```bash
-# assuming DATA_PATH, WATCHLIST_FILE and BENCHMARK has been setup
+# assuming DATA_PATH, WATCHLIST_FILE, and BENCHMARK have been setup
 py init.py
 ```
 
@@ -56,7 +61,7 @@ py init.py
 
 `py init.py -f nifty50.csv`
 
-**To display help use `-h` option.**
+**To display help use the `-h` option.**
 
 `py init.py -h`
 
@@ -66,7 +71,7 @@ py init.py
 
 Press **`delete`** to remove all highlighted lines.
 
-Press **`h`** to toggle help text (Keybindings) in chart.
+Press **`h`** to toggle help text (Keybindings) in the chart.
 
 Press **`a`** to toggle displaying ticker labels (Annotations)
 
@@ -76,7 +81,7 @@ Press **`q`** to quit the chart.
 
 To reset the chart, press **`r`**
 
-To use zoom to rectangle tool - Press **`o`** (useful when lots of symbols on chart.)
+To use the `zoom to rectangle` tool - Press **`o`** (useful when lots of symbols on the chart.)
 
 Matplotlib provides useful window controls like zooming and panning. Read the links below on how to use the various tools.
 
