@@ -4,6 +4,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+try:
+    from scipy import interpolate
+
+    scipy_installed = True
+except ModuleNotFoundError:
+    scipy_installed = False
+
+
 from loaders import AbstractLoader
 
 version = "1.0.1"
@@ -73,6 +81,13 @@ class RRG:
         )
 
         self.loader = loader
+
+    def get_smooth_curve(self, x, y):
+        # Interpolate a smooth curve through the scatter points
+        tck, _ = interpolate.splprep([x, y], s=0)  # s=0 for no smoothing
+        t = np.linspace(0, 1, 100)  # Parameter values
+        line_x, line_y = interpolate.splev(t, tck)  # Evaluate spline
+        return line_x, line_y
 
     def plot(self):
         txt_alpha = 0.4
@@ -176,9 +191,17 @@ class RRG:
                 alpha=0,
             )
 
+            if scipy_installed and self.tail_count > 3:
+                x, y = self.get_smooth_curve(
+                    rsr.iloc[-self.tail_count :], rsm.iloc[-self.tail_count :]
+                )
+            else:
+                x = rsr.iloc[-self.tail_count :]
+                y = rsm.iloc[-self.tail_count :]
+
             line = axs.plot(
-                rsr.iloc[-self.tail_count :],
-                rsm.iloc[-self.tail_count :],
+                x,
+                y,
                 linestyle="-",
                 color=colors[i],
                 linewidth=1.2,
