@@ -1,8 +1,6 @@
 import sys
 from pathlib import Path
 
-import pandas as pd
-
 import utils
 from RRG import RRG, version
 
@@ -57,12 +55,7 @@ loader = loader_class(
     period=max(minimum_period_to_load, period),
 )
 
-if args.sym:
-    watchlist = pd.DataFrame(
-        data=dict(SYMBOL=args.sym, ABBREV=[None] * len(args.sym))
-    )
-else:
-    watchlist = pd.read_csv(args.file)
+watchlist = args.file.read_text().strip().split("\n") if args.file else args.sym
 
 rrg = RRG(
     config,
