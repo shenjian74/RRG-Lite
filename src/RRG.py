@@ -23,7 +23,7 @@ class RRG:
         config: dict,
         loader: AbstractLoader,
         watchlist: pd.DataFrame,
-        tail_count=3,
+        tail_count=4,
         benchmark=None,
     ):
         self.watchlist = watchlist

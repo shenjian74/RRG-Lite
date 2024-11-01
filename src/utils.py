@@ -61,7 +61,7 @@ def parse_cli_options():
         "-t",
         "--tail",
         type=int,
-        default=3,
+        default=4,
         metavar="int",
         help="Length of tail. Default 3",
     )
