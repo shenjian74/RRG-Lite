@@ -27,9 +27,11 @@ If you liked this project, please :star2: both our repos to encourage more inspi
 
 - Tail count must be above 4 else it defaults to straight lines.
 
-To enable curved lines, install `scipy`.
+**To enable curved lines**, install `scipy`.
 
 `pip install scipy`
+  
+![Curved tail lines](https://res.cloudinary.com/doyu4uovr/image/upload/s--8sjBpJSv--/f_auto/v1730460187/RRG-Lite/Screenshot_2024-11-01_16-08-56_clipdn.png)
 
 ## Setup
 
@@ -72,11 +74,11 @@ Press **`t`** to toggle tail lines for all tickers.
 
 Press **`q`** to quit the chart.
 
+To reset the chart, press **`r`**
+
+To use zoom to rectangle tool - Press **`o`** (useful when lots of symbols on chart.)
+
 Matplotlib provides useful window controls like zooming and panning. Read the links below on how to use the various tools.
-
-To use zoom to rectangle tool - Press `o` (useful if plotting lots of symbols on chart.)
-
-To reset the chart, press `r`
 
 [Interactive navigation](https://matplotlib.org/stable/users/explain/figure/interactive.html#interactive-navigation)
 
