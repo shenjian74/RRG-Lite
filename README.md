@@ -23,11 +23,20 @@ If you liked this project, please :star2: both our repos to encourage more inspi
 
 `pip install -r requirements.txt`
 
+**v1.0.2 adds smooth curved tail lines.** This is an optional feature.
+
+- Tail count must be above 4 else it defaults to straight lines.
+
+To enable curved lines, install `scipy`.
+
+`pip install scipy`
+
 ## Setup
 
 See [Setting up configuration file](https://github.com/BennyThadikaran/RRG-Lite/wiki/Setup)
 
 If you wish to use [EOD2](https://github.com/BennyThadikaran/eod2) as your data source, follow the [install instructions here](https://github.com/BennyThadikaran/eod2/wiki/Installation) to setup EOD2 and set `DATA_PATH` to `src/eod2_data/daily`
+
 ## Quick Usage
 
 Make sure to setup your configuration file.
