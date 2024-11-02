@@ -102,7 +102,7 @@ class RRG:
                 f"Unable to load benchmark data for {self.benchmark}"
             )
 
-        bm = bm.loc[:, "Close"]
+        bm_closes = self._process_ser(bm.loc[:, "Close"])
 
         # Setup the chart
         self.fig, axs = plt.subplots()
@@ -153,9 +153,9 @@ class RRG:
             if df is None or df.empty:
                 continue
 
-            df = df.loc[:, "Close"]
+            ser_closes = self._process_ser(df.loc[:, "Close"])
 
-            rsr = self._calculate_rs(df, bm)
+            rsr = self._calculate_rs(ser_closes, bm_closes)
 
             rsm = self._calculate_momentum(rsr)
 
@@ -233,6 +233,16 @@ class RRG:
         self.axs = axs
 
         plt.show()
+
+    @staticmethod
+    def _process_ser(ser: pd.Series) -> pd.Series:
+        if ser.index.has_duplicates:
+            ser = ser.loc[~ser.index.duplicated()]
+
+        if not ser.index.is_monotonic_increasing:
+            ser = ser.sort_index(ascending=True)
+
+        return ser
 
     def _calculate_rs(
         self, stock_df: pd.Series, benchmark_df: pd.Series
