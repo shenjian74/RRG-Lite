@@ -77,7 +77,12 @@ py init.py
 
 **Left Mouse click on any point (marker)** to display/highlight the tail line and label.
 
-Press **`delete`** to remove all highlighted lines.
+**When a line is highlighted:**
+
+- Press `Left arrow` or `Right arrow` keys to cycle through each marker on the line, diplaying a date label. (see image below)
+- Press **`delete`** to remove all highlighted lines.
+
+![date labels in rrg chart](https://res.cloudinary.com/doyu4uovr/image/upload/s--LXhH7lCx--/f_auto/v1730546523/RRG-Lite/date_labels_rrg_chart_ezojbu.png)
 
 Press **`h`** to toggle help text (Keybindings) in the chart.
 
