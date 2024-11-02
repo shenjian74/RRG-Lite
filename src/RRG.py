@@ -82,13 +82,6 @@ class RRG:
 
         self.loader = loader
 
-    def get_smooth_curve(self, x, y):
-        # Interpolate a smooth curve through the scatter points
-        tck, _ = interpolate.splprep([x, y], s=0)  # s=0 for no smoothing
-        t = np.linspace(0, 1, 100)  # Parameter values
-        line_x, line_y = interpolate.splev(t, tck)  # Evaluate spline
-        return line_x, line_y
-
     def plot(self):
         txt_alpha = 0.4
         bg_alpha = 0.2
@@ -192,7 +185,7 @@ class RRG:
             )
 
             if scipy_installed and self.tail_count > 3:
-                x, y = self.get_smooth_curve(
+                x, y = self._get_smooth_curve(
                     rsr.iloc[-self.tail_count :], rsm.iloc[-self.tail_count :]
                 )
             else:
@@ -243,6 +236,21 @@ class RRG:
             ser = ser.sort_index(ascending=True)
 
         return ser
+
+    @staticmethod
+    def _get_smooth_curve(x, y):
+        # Interpolate a smooth curve through the scatter points
+        tck, _ = interpolate.splprep([x, y], s=0)  # s=0 for no smoothing
+        t = np.linspace(0, 1, 100)  # Parameter values
+        line_x, line_y = interpolate.splev(t, tck)  # Evaluate spline
+        return line_x, line_y
+
+    @staticmethod
+    def _format_coords(x, y):
+        """
+        A function to format the coordinate string
+        """
+        return f"RS: {x:.2f}     MOM: {y:.2f}"
 
     def _calculate_rs(
         self, stock_df: pd.Series, benchmark_df: pd.Series
@@ -355,12 +363,6 @@ class RRG:
             self.help_plt = None
 
         self.fig.canvas.draw_idle()
-
-    def _format_coords(self, x, y):
-        """
-        A function to format the coordinate string
-        """
-        return f"RS: {x:.2f}     MOM: {y:.2f}"
 
     def _on_pick(self, event):
         """
