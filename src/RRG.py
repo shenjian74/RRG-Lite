@@ -27,6 +27,7 @@ class RRG:
         benchmark=None,
     ):
         self.watchlist = watchlist
+        self.loader = loader
 
         benchmark_config = config.get("BENCHMARK", None)
 
@@ -73,14 +74,22 @@ class RRG:
         tail, markers and labels
         """
 
+        # Map keyboard shortcuts to their relevant handlers
         self.key_handler = dict(
             delete=self._clear_all,
             a=self._toggle_text,
             t=self._toggle_lines,
             h=self._toggle_help,
+            left=self._cycle_dates,
+            right=self._cycle_dates,
         )
 
-        self.loader = loader
+        # properties to help track date labels when cycling through them.
+        # Activated when a tail line is highlighted
+        self.tabbable = False
+        self.tabindex = 0
+        self.highlighted_count = 0
+        self.active_date_labels = []
 
     def plot(self):
         txt_alpha = 0.4
@@ -201,10 +210,26 @@ class RRG:
                 alpha=0,
             )[0]
 
+            # apply date annotations to the tail markers
+            # Head marker date text is set to bold
+            date_annotations = tuple(
+                axs.annotate(
+                    idx.strftime("%d %b %Y"),
+                    xy=(rsr.loc[idx], rsm.loc[idx]),
+                    xytext=(-5, -3),
+                    textcoords="offset points",
+                    horizontalalignment="right",
+                    alpha=0,
+                    fontweight=("bold" if idx == rsr.index[-1] else "normal"),
+                )
+                for idx in rsr.index[-self.tail_count :]
+            )
+
             self.state[url] = dict(
                 line=line,
                 markers=markers,
                 annotation=annotation,
+                dates=date_annotations,
             )
 
         self.fig.canvas.mpl_connect("pick_event", self._on_pick)
@@ -229,6 +254,10 @@ class RRG:
 
     @staticmethod
     def _process_ser(ser: pd.Series) -> pd.Series:
+        """
+        Make corrections in dataframe if there are duplicate indexs
+        or not sorted in correct order
+        """
         if ser.index.has_duplicates:
             ser = ser.loc[~ser.index.duplicated()]
 
@@ -287,7 +316,7 @@ class RRG:
 
         return ((rs_roc - roc_sma.mean()) / roc_sma.std(ddof=1)).dropna() + 100
 
-    def _clear_all(self):
+    def _clear_all(self, key):
         """
         Clear all additional markers and text annotations
         """
@@ -302,10 +331,16 @@ class RRG:
                 self.state[url]["markers"].set_alpha(0)
                 self.state[url]["annotation"].set_alpha(self.text_alpha_state)
 
+        if self.active_date_labels:
+            updated = True
+            self._clear_active_date_labels()
+            self.highlighted_count = 0
+            self.tabbable = 0
+
         if updated:
             self.fig.canvas.draw_idle()
 
-    def _toggle_text(self):
+    def _toggle_text(self, key):
         """
         Toggle text labels on the data points.
         """
@@ -323,7 +358,7 @@ class RRG:
         self.text_alpha_state = alpha
         self.fig.canvas.draw_idle()
 
-    def _toggle_lines(self):
+    def _toggle_lines(self, key):
         """
         Toggle tail line visibility
         """
@@ -344,7 +379,7 @@ class RRG:
         self.line_alpha_state = alpha
         self.fig.canvas.draw_idle()
 
-    def _toggle_help(self):
+    def _toggle_help(self, key):
         """
         Toggle Help text
         """
@@ -364,6 +399,47 @@ class RRG:
 
         self.fig.canvas.draw_idle()
 
+    def _cycle_dates(self, key):
+        """
+        Cycle forward through the tail markers and toggle their visibility.
+        Only works, when a marker has been highlighted by left mouse click.
+        """
+        if not self.tabbable:
+            return
+
+        step = -1 if key == "left" else 1
+
+        for url in self.state:
+            # Check if the line is visible
+            if self.state[url]["line"]._alpha == 1:
+                length = len(self.state[url]["dates"])
+
+                # tabindex always starts at 0
+                date_label = self.state[url]["dates"][self.tabindex]
+
+                if date_label._alpha == 0:
+                    # On first label, if date_label is hidden, make it visible
+                    date_label.set_alpha(1)
+                else:
+                    # on subsequent labels, first hide all date labels
+                    # cycle to next or previous label and set visibility
+                    self._clear_active_date_labels()
+                    self.tabindex = (self.tabindex + step) % length
+                    self.state[url]["dates"][self.tabindex].set_alpha(1)
+
+                # track the visible labels, so we can clear them as needed
+                self.active_date_labels.append(
+                    self.state[url]["dates"][self.tabindex]
+                )
+
+        self.fig.canvas.draw_idle()
+
+    def _clear_active_date_labels(self):
+        """Hide all date labels"""
+        for date_label in self.active_date_labels:
+            date_label.set_alpha(0)
+        self.active_date_labels.clear()
+
     def _on_pick(self, event):
         """
         Handler for the pick event (when the head marker is clicked).
@@ -378,8 +454,23 @@ class RRG:
         markers = self.state[url]["markers"]
         annotation = self.state[url]["annotation"]
 
+        # Reset the tabindex and hide any date labels
+        self.tabindex = 0
+
+        if self.active_date_labels:
+            self._clear_active_date_labels()
+
         # toggle visibility of tail markers
-        markers.set_alpha(markers._alpha == 0 or 0)
+        if markers._alpha == 0:
+            markers.set_alpha(1)
+            self.highlighted_count += 1
+            self.tabbable = True
+        else:
+            markers.set_alpha(0)
+            self.highlighted_count -= 1
+
+            if self.highlighted_count == 0:
+                self.tabbable = False
 
         # toggle visibility of tail lines
         if self.line_alpha_state == self.line_alpha:
@@ -407,4 +498,4 @@ class RRG:
         key = event.key
 
         if key in self.key_handler:
-            self.key_handler[key]()
+            self.key_handler[key](key)
