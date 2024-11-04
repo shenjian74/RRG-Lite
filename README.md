@@ -31,7 +31,7 @@ If you liked this project, please :star2: the repos to encourage more inspiratio
 
 **v1.0.2 adds smooth curved tail lines.** This is an optional feature.
 
-- Tail count must be above 4 else it defaults to straight lines.
+- If tail count is less than 3, it defaults to straight lines.
 
 **To enable curved lines**, install `scipy`.
 
@@ -39,16 +39,17 @@ If you liked this project, please :star2: the repos to encourage more inspiratio
 
 ![Curved tail lines](https://res.cloudinary.com/doyu4uovr/image/upload/s--8sjBpJSv--/f_auto/v1730460187/RRG-Lite/Screenshot_2024-11-01_16-08-56_clipdn.png)
 
-## Setup
+## Setup user.json
 
 To get started, you need a folder containing OHLC data (Daily timeframe or higher) in CSV format.
 
-- Atleast one benchmark index like `Nifty 50` or `S&P 500`.
-- Stock / ETF / Sector indices to compare against the benchmark.
+See [Steps to create user.json](https://github.com/BennyThadikaran/RRG-Lite/wiki/Setup#steps-to-create-the-configuration-file)
 
-See [Setting up configuration file](https://github.com/BennyThadikaran/RRG-Lite/wiki/Setup)
+#### Using EOD2 as data source
 
-If you wish to use [EOD2](https://github.com/BennyThadikaran/eod2) as your data source, follow the [install instructions here](https://github.com/BennyThadikaran/eod2/wiki/Installation) to setup EOD2 and set `DATA_PATH` to `src/eod2_data/daily`
+To use [EOD2](https://github.com/BennyThadikaran/eod2) as your data source, follow the [install instructions here](https://github.com/BennyThadikaran/eod2/wiki/Installation) to setup EOD2.
+
+Set the `DATA_PATH` in your user.json to the full path to EOD2 daily folder located in src/eod2_data/daily.
 
 You can download my sectors watchlist file that works with EOD2 - [sectors.csv](https://res.cloudinary.com/doyu4uovr/raw/upload/v1730526283/RRG-Lite/sectors_vwqau3.csv)
 
