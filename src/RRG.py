@@ -193,7 +193,7 @@ class RRG:
                 alpha=0,
             )
 
-            if scipy_installed and self.tail_count > 3:
+            if scipy_installed and self.tail_count > 2:
                 x, y = self._get_smooth_curve(
                     rsr.iloc[-self.tail_count :], rsm.iloc[-self.tail_count :]
                 )
@@ -269,7 +269,7 @@ class RRG:
     @staticmethod
     def _get_smooth_curve(x, y):
         # Interpolate a smooth curve through the scatter points
-        tck, _ = interpolate.splprep([x, y], s=0)  # s=0 for no smoothing
+        tck, _ = interpolate.splprep([x, y], s=0, k=2)  # s=0 for no smoothing
         t = np.linspace(0, 1, 100)  # Parameter values
         line_x, line_y = interpolate.splev(t, tck)  # Evaluate spline
         return line_x, line_y
