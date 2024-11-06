@@ -116,8 +116,6 @@ class RRG:
         axs.format_coord = self._format_coords
 
         plt.tight_layout()
-        plt.xlim(93.5, 106.5)
-        plt.ylim(93.5, 106.5)
 
         axs.set_title(
             f"RRG - {self.benchmark.upper()} - {bm.index[-1]:%d %b %Y}"
@@ -129,12 +127,6 @@ class RRG:
         axs.axhline(y=100, color="black", linestyle="--", linewidth=0.3)
         axs.axvline(x=100, color="black", linestyle="--", linewidth=0.3)
 
-        # Labels for each quadrant
-        axs.text(94, 105.5, "Improving", fontweight="bold", alpha=txt_alpha)
-        axs.text(105, 105.5, "Leading", fontweight="bold", alpha=txt_alpha)
-        axs.text(105, 94, "Weakening", fontweight="bold", alpha=txt_alpha)
-        axs.text(94, 94, "Lagging", fontweight="bold", alpha=txt_alpha)
-
         # Background colors for each quadrant
         axs.fill_between([93.5, 100], 100, 106.5, color="aqua", alpha=bg_alpha)
         axs.fill_between([100, 106.5], 100, 106.5, color="lime", alpha=bg_alpha)
@@ -144,6 +136,9 @@ class RRG:
         axs.fill_between(
             [93.5, 100], 93.5, 100, color="orangered", alpha=bg_alpha
         )
+
+        x_max = y_max = 0
+        x_min = y_min = 200
 
         # Start calculation of RS and RS Momentum
         for i, ticker in enumerate(self.watchlist):
@@ -169,6 +164,21 @@ class RRG:
             rsr = self._calculate_rs(ser_closes, bm_closes)
 
             rsm = self._calculate_momentum(rsr)
+
+            rsr_line = rsr.iloc[-self.tail_count :]
+            rsm_line = rsm.iloc[-self.tail_count :]
+
+            if rsr_line.max() > x_max:
+                x_max = rsr_line.max()
+
+            if rsr_line.min() < x_min:
+                x_min = rsr_line.min()
+
+            if rsm_line.max() > y_max:
+                y_max = rsm_line.max()
+
+            if rsm_line.min() < y_min:
+                y_min = rsm_line.min()
 
             annotation = axs.annotate(
                 short_name.upper(),
@@ -240,6 +250,26 @@ class RRG:
                 annotation=annotation,
                 dates=date_annotations,
             )
+
+        axs.set_xlim(x_min - 0.3, x_max + 0.3)
+        axs.set_ylim(y_min - 0.3, y_max + 0.3)
+
+        # Labels for each quadrant
+        axs.text(
+            x_min - 0.2, y_max, "Improving", fontweight="bold", alpha=txt_alpha
+        )
+
+        axs.text(
+            x_max - 0.1, y_max, "Leading", fontweight="bold", alpha=txt_alpha
+        )
+
+        axs.text(
+            x_max - 0.2, y_min, "Weakening", fontweight="bold", alpha=txt_alpha
+        )
+
+        axs.text(
+            x_min - 0.2, y_min, "Lagging", fontweight="bold", alpha=txt_alpha
+        )
 
         self.fig.canvas.mpl_connect("pick_event", self._on_pick)
         self.fig.canvas.mpl_connect("key_press_event", self._on_key_press)
