@@ -95,9 +95,8 @@ class RRG:
 
     def plot(self):
         txt_alpha = 0.4
-        bg_alpha = 0.2
 
-        colors = np.random.rand(len(self.watchlist), 3) * 0.6
+        # colors = np.random.rand(len(self.watchlist), 3) * 0.6
 
         bm = self.loader.get(self.benchmark)
 
@@ -164,6 +163,8 @@ class RRG:
             rsr_line = rsr.iloc[-self.tail_count :]
             rsm_line = rsm.iloc[-self.tail_count :]
 
+            color = self._get_color(rsr.iloc[-1], rsm.iloc[-1])
+
             if rsr_line.max() > x_max:
                 x_max = rsr_line.max()
 
@@ -190,7 +191,7 @@ class RRG:
                 x=rsr.iloc[-1],
                 y=rsm.iloc[-1],
                 s=40,
-                color=colors[i],
+                color=color,
                 marker="o",
                 picker=True,
             )
@@ -202,7 +203,7 @@ class RRG:
             markers = axs.scatter(
                 x=rsr.iloc[-self.tail_count : -1],
                 y=rsm.iloc[-self.tail_count : -1],
-                c=[colors[i]] * (self.tail_count - 1),
+                c=color,
                 s=20,
                 marker="o",
                 alpha=0,
@@ -220,7 +221,7 @@ class RRG:
                 x,
                 y,
                 linestyle="-",
-                color=colors[i],
+                color=color,
                 linewidth=1.2,
                 alpha=0,
             )[0]
@@ -315,6 +316,13 @@ class RRG:
         A function to format the coordinate string
         """
         return f"RS: {x:.2f}     MOM: {y:.2f}"
+
+    @staticmethod
+    def _get_color(x, y):
+        if x > 100:
+            return "#008217" if y > 100 else "#918000"
+        else:
+            return "#00749D" if y > 100 else "#E0002B"
 
     def _calculate_rs(
         self, stock_df: pd.Series, benchmark_df: pd.Series
