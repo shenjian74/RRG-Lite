@@ -58,6 +58,8 @@ class RRG:
         self.text_alpha = 0.6
         self.line_alpha = 0.5
 
+        self.minimum_data_length = self.window * 2 + self.tail_count
+
         self.help_plt = None
 
         self.help_str = """
@@ -103,6 +105,9 @@ class RRG:
             raise ValueError(
                 f"Unable to load benchmark data for {self.benchmark}"
             )
+
+        if len(bm) < self.minimum_data_length:
+            raise ValueError("Benchmark data is insufficient to plot chart.")
 
         bm_closes = self._process_ser(bm.loc[:, "Close"])
 
@@ -153,6 +158,10 @@ class RRG:
             df = self.loader.get(ticker)
 
             if df is None or df.empty:
+                continue
+
+            if len(df) < self.minimum_data_length:
+                print(f"Unable to load `{ticker.upper()}`: Insufficient data")
                 continue
 
             ser_closes = self._process_ser(df.loc[:, "Close"])
