@@ -128,14 +128,10 @@ class RRG:
         axs.axvline(x=100, color="black", linestyle="--", linewidth=0.3)
 
         # Background colors for each quadrant
-        axs.fill_between([93.5, 100], 100, 106.5, color="aqua", alpha=bg_alpha)
-        axs.fill_between([100, 106.5], 100, 106.5, color="lime", alpha=bg_alpha)
-        axs.fill_between(
-            [100, 106.5], 93.5, 100, color="yellow", alpha=bg_alpha
-        )
-        axs.fill_between(
-            [93.5, 100], 93.5, 100, color="orangered", alpha=bg_alpha
-        )
+        axs.fill_between([93.5, 100], 100, 106.5, color="#b1ebff")
+        axs.fill_between([100, 106.5], 100, 106.5, color="#bdffc9")
+        axs.fill_between([100, 106.5], 93.5, 100, color="#fff7b8")
+        axs.fill_between([93.5, 100], 93.5, 100, color="#ffb9c6")
 
         x_max = y_max = 0
         x_min = y_min = 200
