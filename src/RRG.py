@@ -58,7 +58,7 @@ class RRG:
         self.text_alpha = 0.6
         self.line_alpha = 0.5
 
-        self.minimum_data_length = self.window * 2 + self.tail_count
+        self.minimum_data_length = self.period + self.window + self.tail_count
 
         self.help_plt = None
 
@@ -352,9 +352,10 @@ class RRG:
         """
 
         pos = min(len(rs_ratio), self.period)
+        base_rs = rs_ratio.shift(pos)
 
-        # Rate of change (ROC) with first value as base
-        rs_roc = ((rs_ratio / rs_ratio.iloc[-pos]) - 1) * 100
+        # Rate of change (ROC)
+        rs_roc = ((rs_ratio / base_rs) - 1) * 100
 
         roc_sma = rs_roc.rolling(window=self.window)
 

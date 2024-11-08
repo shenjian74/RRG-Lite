@@ -46,7 +46,7 @@ loader_class = utils.get_loader_class(config)
 window = config.get("WINDOW", 14)
 period = config.get("PERIOD", 52)
 
-minimum_period_to_load = window * 2 + args.tail
+minimum_period_to_load = period + window + args.tail
 
 loader = loader_class(
     config,
