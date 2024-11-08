@@ -236,6 +236,7 @@ class RRG:
                     textcoords="offset points",
                     horizontalalignment="right",
                     alpha=0,
+                    zorder=100,
                     fontweight=("bold" if idx == rsr.index[-1] else "normal"),
                 )
                 for idx in rsr.index[-self.tail_count :]
@@ -463,12 +464,16 @@ class RRG:
                 if date_label._alpha == 0:
                     # On first label, if date_label is hidden, make it visible
                     date_label.set_alpha(1)
+                    date_label.set_backgroundcolor("white")
                 else:
                     # on subsequent labels, first hide all date labels
                     # cycle to next or previous label and set visibility
                     self._clear_active_date_labels()
                     self.tabindex = (self.tabindex + step) % length
                     self.state[url]["dates"][self.tabindex].set_alpha(1)
+                    self.state[url]["dates"][self.tabindex].set_backgroundcolor(
+                        "white"
+                    )
 
                 # track the visible labels, so we can clear them as needed
                 self.active_date_labels.append(
@@ -481,6 +486,7 @@ class RRG:
         """Hide all date labels"""
         for date_label in self.active_date_labels:
             date_label.set_alpha(0)
+            date_label._bbox_patch = None
         self.active_date_labels.clear()
 
     def _on_pick(self, event):
