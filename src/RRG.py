@@ -14,7 +14,7 @@ except ModuleNotFoundError:
 
 from loaders import AbstractLoader
 
-version = "1.0.6"
+version = "1.0.7"
 
 
 class RRG:
