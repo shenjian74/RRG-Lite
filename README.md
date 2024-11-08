@@ -4,7 +4,7 @@ RRG-Lite is a Python CLI tool for displaying Relative Rotational graph (RRG) cha
 
 **Supports Python >= 3.8**
 
-![RRG-Lite Charts](https://res.cloudinary.com/doyu4uovr/image/upload/s--iJSjOAuE--/c_scale,f_auto,w_800/v1731069111/rrg-lite-main_ggsdbr.png)
+![RRG-Lite Charts](https://res.cloudinary.com/doyu4uovr/image/upload/s--iD51VT-2--/f_auto/v1731069111/RRG-Lite/rrg-lite-main_ggsdbr.png)
 
 **Unlike traditional RRG charts,**
 
@@ -37,7 +37,7 @@ If you liked this project, please :star2: the repos to encourage more inspiratio
 
 `pip install scipy`
 
-![Curved tail lines](https://res.cloudinary.com/doyu4uovr/image/upload/s--SRgRWuGi--/f_auto/v1731069415/rrg-lite-curved-line_pd5int.png)
+![Curved tail lines](https://res.cloudinary.com/doyu4uovr/image/upload/s--x4RTqGdv--/f_auto/v1731069415/RRG-Lite/rrg-lite-curved-line_pd5int.png)
 
 ## Setup user.json
 
@@ -83,7 +83,7 @@ py init.py
 - Press `Left arrow` or `Right arrow` keys to cycle through each marker on the line, diplaying a date label. (see image below)
 - Press **`delete`** to remove all highlighted lines.
 
-![date labels in rrg chart](https://res.cloudinary.com/doyu4uovr/image/upload/s--DJlHHybh--/f_auto/v1731069111/rrg-lite-date-labels_y5ba0o.png)
+![date labels in rrg chart](https://res.cloudinary.com/doyu4uovr/image/upload/s--YQhUxYZK--/f_auto/v1731069111/RRG-Lite/rrg-lite-date-labels_y5ba0o.png)
 
 Press **`h`** to toggle help text (Keybindings) in the chart.
 
