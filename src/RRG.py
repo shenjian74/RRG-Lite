@@ -14,7 +14,7 @@ try:
 except ModuleNotFoundError:
     scipy_installed = False
 
-version = "1.0.7"
+version = "1.0.8"
 
 
 class RRG:
