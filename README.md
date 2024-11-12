@@ -1,10 +1,20 @@
 # RRG-Lite
 
-RRG-Lite is a Python CLI tool for displaying Relative Rotational graph (RRG) charts.
+RRG-Lite is a Python CLI tool for displaying Relative Rotation graph (RRG) charts.
 
 **Supports Python >= 3.8**
 
 ![RRG-Lite Charts](https://res.cloudinary.com/doyu4uovr/image/upload/s--iD51VT-2--/f_auto/v1731069111/RRG-Lite/rrg-lite-main_ggsdbr.png)
+
+An RRG (Relative Rotation Graph) chart is used to analyze the relative strength and momentum of multiple stocks or sectors compared to a benchmark (usually a market index like the S&P 500 or Nifty 50).
+
+It provides a bird's-eye view of how various stocks or sectors are performing relative to the benchmark over time.
+
+RRG charts can help identify which stocks or sectors are outperforming or underperforming the index.
+
+They are useful for asset allocation decisions and for identifying both momentum stocks and potential bottom-fishing opportunities.
+
+Read more about [RRG - Investopedia.com](https://www.investopedia.com/relative-rotation-graph-8418457)
 
 **Unlike traditional RRG charts,**
 
@@ -29,48 +39,55 @@ If you liked this project, please :star2: the repos to encourage more inspiratio
 
 `pip install -r requirements.txt`
 
-**v1.0.2 adds smooth curved tail lines.** This is an optional feature.
-
-- If tail count is less than 3, it defaults to straight lines.
-
-**To enable curved lines**, install `scipy`.
+**Optional:** To enable curved tail lines, install `scipy`.
 
 `pip install scipy`
 
+- If tail count is less than 3, it defaults to straight lines.
+
 ![Curved tail lines](https://res.cloudinary.com/doyu4uovr/image/upload/s--x4RTqGdv--/f_auto/v1731069415/RRG-Lite/rrg-lite-curved-line_pd5int.png)
 
-## Setup user.json
+## Setup
 
 To get started, you need a folder containing OHLC data (Daily timeframe or higher) in CSV format.
 
-See [Steps to create user.json](https://github.com/BennyThadikaran/RRG-Lite/wiki/Setup#steps-to-create-the-configuration-file)
+Folder must have: 1. Atleast one Benchmark index file. 2. One or more stocks/etfs/sector files.
 
-#### Using EOD2 as data source
+Create a `user.json` file in `src/` as below
 
-To use [EOD2](https://github.com/BennyThadikaran/eod2) as your data source, follow the [install instructions here](https://github.com/BennyThadikaran/eod2/wiki/Installation) to setup EOD2.
+```json
+{
+  "DATA_PATH": "full/path/to/data/folder/"
+}
+```
 
-Set the `DATA_PATH` in your user.json to the full path to EOD2 daily folder located in src/eod2_data/daily.
+`DATA_PATH` must be a folder path, where OHLC data is stored. Above is the minumum configuration required to get started.
+
+See [additional configuration options](https://github.com/BennyThadikaran/RRG-Lite/wiki/Setup)
+
+#### Use EOD2 as data source
+
+If you need data on Indian Stocks (NSE), you can try [EOD2](https://github.com/BennyThadikaran/eod2) and [follow install instructions here](https://github.com/BennyThadikaran/eod2/wiki/Installation) to setup EOD2.
+
+Once EOD2 is setup, follow the setup instructions above, and set the `DATA_PATH` to the full path to EOD2 daily folder located in `src/eod2_data/daily/`.
 
 You can download my sectors watchlist file that works with EOD2 - [sectors.csv](https://res.cloudinary.com/doyu4uovr/raw/upload/v1730526283/RRG-Lite/sectors_vwqau3.csv)
 
 ## Quick Usage
 
-Make sure to set up your configuration file.
+**Pass a benchmark index using `-b` and a list of symbol names using `--sym`.**
 
-```bash
-# assuming DATA_PATH, WATCHLIST_FILE, and BENCHMARK have been setup
-py init.py
-```
+`py init.py -b "nifty bank" --sym csbbank rblbank`
 
-**Pass a benchmark index using `-b` or `--benchmark` and a list of symbol names using `--sym`.**
+**Note:** In the above example, it will look for files named `nifty bank.csv`, `csbbank.csv`, and `rblbank.csv` in the `DATA_PATH` folder
 
-`py init.py -b "nifty bank" --sym csbbank rblbank indianb ucobank`
+**Pass a watchlist file using `-f` option**
 
-**Pass a watchlist file using `-f` or `--file` option**
+`py init.py -b 'nifty 50' -f sectors.csv`
 
-`py init.py -f nifty50.csv`
+**Note:** See details on [setting up a watchlist](https://github.com/BennyThadikaran/RRG-Lite/wiki/Setup#watchlist-file-format)
 
-**To display help use the `-h` option.**
+**To display help, use the `-h` option.**
 
 `py init.py -h`
 
