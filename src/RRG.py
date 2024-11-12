@@ -1,8 +1,11 @@
 import sys
+from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+import utils
 
 try:
     from scipy import interpolate
@@ -11,9 +14,6 @@ try:
 except ModuleNotFoundError:
     scipy_installed = False
 
-
-from loaders import AbstractLoader
-
 version = "1.0.7"
 
 
@@ -21,13 +21,12 @@ class RRG:
     def __init__(
         self,
         config: dict,
-        loader: AbstractLoader,
         watchlist: list,
         tail_count=4,
         benchmark=None,
+        **kwargs,
     ):
         self.watchlist = watchlist
-        self.loader = loader
 
         benchmark_config = config.get("BENCHMARK", None)
 
@@ -58,7 +57,16 @@ class RRG:
         self.text_alpha = 0.6
         self.line_alpha = 0.5
 
-        self.minimum_data_length = self.period + self.window + self.tail_count
+        self.minimum_data_length = max(
+            self.window * 2 + self.tail_count,
+            self.window + self.period + self.tail_count,
+        )
+
+        loader_class = utils.get_loader_class(config)
+
+        self.loader = loader_class(
+            config, period=self.minimum_data_length, **kwargs
+        )
 
         self.help_plt = None
 
@@ -150,15 +158,15 @@ class RRG:
             if df is None or df.empty:
                 continue
 
-            if len(df) < self.minimum_data_length:
-                print(f"Unable to load `{ticker.upper()}`: Insufficient data")
-                continue
-
             ser_closes = self._process_ser(df.loc[:, "Close"])
 
             rsr = self._calculate_rs(ser_closes, bm_closes)
 
             rsm = self._calculate_momentum(rsr)
+
+            if min(len(rsm), len(rsr)) < self.tail_count:
+                print(f"Unable to load `{ticker.upper()}`: Insufficient data")
+                continue
 
             rsr_line = rsr.iloc[-self.tail_count :]
             rsm_line = rsm.iloc[-self.tail_count :]

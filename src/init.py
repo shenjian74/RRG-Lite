@@ -43,26 +43,15 @@ args = utils.parse_cli_options()
 
 loader_class = utils.get_loader_class(config)
 
-window = config.get("WINDOW", 14)
-period = config.get("PERIOD", 52)
-
-minimum_period_to_load = period + window + args.tail
-
-loader = loader_class(
-    config,
-    args.tf,
-    end_date=args.date,
-    period=max(minimum_period_to_load, period),
-)
-
 watchlist = args.file.read_text().strip().split("\n") if args.file else args.sym
 
 rrg = RRG(
     config,
-    loader=loader,
     watchlist=watchlist,
     tail_count=args.tail,
     benchmark=args.benchmark,
+    tf=args.tf,
+    end_date=args.date,
 )
 
 rrg.plot()
