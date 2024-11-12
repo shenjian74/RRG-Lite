@@ -51,7 +51,10 @@ If you liked this project, please :star2: the repos to encourage more inspiratio
 
 To get started, you need a folder containing OHLC data (Daily timeframe or higher) in CSV format.
 
-Folder must have: 1. Atleast one Benchmark index file. 2. One or more stocks/etfs/sector files.
+**Folder must contain:** 
+
+1. Atleast one Benchmark index file.
+2. One or more stock / etf / sector files.
 
 Create a `user.json` file in `src/` as below
 
@@ -69,7 +72,7 @@ See [additional configuration options](https://github.com/BennyThadikaran/RRG-Li
 
 If you need data on Indian Stocks (NSE), you can try [EOD2](https://github.com/BennyThadikaran/eod2) and [follow install instructions here](https://github.com/BennyThadikaran/eod2/wiki/Installation) to setup EOD2.
 
-Once EOD2 is setup, follow the setup instructions above, and set the `DATA_PATH` to the full path to EOD2 daily folder located in `src/eod2_data/daily/`.
+Once EOD2 is setup, follow the [setup instructions](#setup), and set `DATA_PATH` to the full path to EOD2 daily folder located in `src/eod2_data/daily/`.
 
 You can download my sectors watchlist file that works with EOD2 - [sectors.csv](https://res.cloudinary.com/doyu4uovr/raw/upload/v1730526283/RRG-Lite/sectors_vwqau3.csv)
 
