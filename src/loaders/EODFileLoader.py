@@ -124,7 +124,11 @@ class EODFileLoader(AbstractLoader):
         if self.tf == self.default_tf or df.empty:
             return df
 
-        df = df.resample(self.offset_str).agg(self.ohlc_dict).dropna()
+        df = (
+            df.resample(self.offset_str, label="left")
+            .agg(self.ohlc_dict)
+            .dropna()
+        )
 
         assert isinstance(df, pd.DataFrame)
 
