@@ -261,21 +261,41 @@ class RRG:
         axs.set_ylim(y_min - 0.3, y_max + 0.3)
 
         # Labels for each quadrant
-        axs.text(
-            x_min - 0.2, y_max, "Improving", fontweight="bold", alpha=txt_alpha
-        )
+        if x_min < 100 and y_max > 100:
+            axs.text(
+                x_min - 0.2,
+                y_max,
+                "Improving",
+                fontweight="bold",
+                alpha=txt_alpha,
+            )
 
-        axs.text(
-            x_max - 0.1, y_max, "Leading", fontweight="bold", alpha=txt_alpha
-        )
+        if x_max > 100 and y_max > 100:
+            axs.text(
+                x_max - 0.1,
+                y_max,
+                "Leading",
+                fontweight="bold",
+                alpha=txt_alpha,
+            )
 
-        axs.text(
-            x_max - 0.2, y_min, "Weakening", fontweight="bold", alpha=txt_alpha
-        )
+        if x_max > 100 and y_min < 100:
+            axs.text(
+                x_max - 0.2,
+                y_min,
+                "Weakening",
+                fontweight="bold",
+                alpha=txt_alpha,
+            )
 
-        axs.text(
-            x_min - 0.2, y_min, "Lagging", fontweight="bold", alpha=txt_alpha
-        )
+        if x_min < 100 and y_min < 100:
+            axs.text(
+                x_min - 0.2,
+                y_min,
+                "Lagging",
+                fontweight="bold",
+                alpha=txt_alpha,
+            )
 
         self.fig.canvas.mpl_connect("pick_event", self._on_pick)
         self.fig.canvas.mpl_connect("key_press_event", self._on_key_press)
