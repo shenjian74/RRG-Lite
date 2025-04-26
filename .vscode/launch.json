@@ -1,0 +1,31 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "RRG",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src\\init.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-b",
+                "SH#000300",
+                "--sym",
+                "SZ#000026",
+                "SZ#001324",
+                "SZ#002145",
+                "SZ#002606",
+                "SZ#300034",
+                "SZ#300695",
+                "SZ#300821",
+                "SH#600821",
+                "SH#603344",
+                "SH#603398",
+                "SH#603823"
+            ]
+        }
+    ]
+}
